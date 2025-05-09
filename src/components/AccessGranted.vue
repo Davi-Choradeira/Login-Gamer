@@ -1,7 +1,7 @@
 <template>
   <div class="welcome-container">
     <div class="card">
-      <h1 class="title">Bem-vindo, Gamer!</h1>
+      <h1 class="title">Bem-vindo!</h1>
       <p class="subtitle">Você entrou no universo tecnológico do Vue!</p>
       <button @click="goBack" class="back-button">Voltar</button>
     </div>
