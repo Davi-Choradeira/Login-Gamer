@@ -1,6 +1,6 @@
 <template>
   <div v-if="mostrarTela" class="intro-screen">
-    <h1 class="intro-title"> INICIALIZANDO SISTEMA...</h1>
+    <h1 class="intro-title">INICIALIZANDO SISTEMA...</h1>
     <p class="intro-subtitle">Carregando</p>
     <div class="progress-bar">
       <div class="progress" :style="{ width: `${progress}%` }"></div>
@@ -17,16 +17,17 @@ const progress = ref(0);
 onMounted(() => {
   const interval = setInterval(() => {
     if (progress.value >= 100) {
+      progress.value = 100; // 🔥 Força o valor final da barra
       clearInterval(interval);
-      setTimeout(() => mostrarTela.value = false, 500);
+      setTimeout(() => mostrarTela.value = false, 7000); // 🔥 Espera 4 segundos antes de remover a tela
     } else {
-      progress.value += Math.random() * 10;
+      progress.value += Math.random() * 5; // 🔥 Ajustando a velocidade da barra
     }
   }, 300);
 });
 </script>
 
-<style>
+<style scoped>
 .intro-screen {
   position: fixed;
   top: 0;

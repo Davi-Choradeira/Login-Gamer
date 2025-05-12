@@ -1,32 +1,46 @@
 <template>
-  <FundoEstrelado></FundoEstrelado> <!-- 🔥 Mantendo as estrelas no login -->
-  <Inicializacao v-if="!telaCarregada"></Inicializacao>
-  <LoginGamer v-if="telaCarregada && !acessoLiberado" @login-sucesso="redirecionar"></LoginGamer>
-  <router-view v-if="acessoLiberado"></router-view> <!-- Exibe a página de acesso quando o login for confirmado -->
+  <FundoEstrelado /> <!-- 🔥 Mantendo as estrelas no fundo -->
+
+  <!-- Exibe tela de inicialização antes de carregar login -->
+  <Inicializacao v-if="mostrarInicializacao" class="fade" />
+
+  <!-- Exibe login somente após a tela inicial -->
+  <LoginGamer v-if="!mostrarInicializacao && !acessoLiberado" @login-sucesso="redirecionar" class="fade" />
+
+  <!-- Exibe a página de acesso após login bem-sucedido -->
+  <router-view v-if="acessoLiberado" />
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue' // 🔥 Agora `ref` está corretamente importado!
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import FundoEstrelado from './components/FundoEstrelado.vue'
 import Inicializacao from './components/Inicializacao.vue'
 import LoginGamer from './components/LoginGamer.vue'
 
-const telaCarregada = ref(false)
-const acessoLiberado = ref(localStorage.getItem('acessoLiberado') === 'true') // 🔥 Persistindo estado
+const mostrarInicializacao = ref(true)
+const acessoLiberado = ref(localStorage.getItem('acessoLiberado') === 'true') // 🔥 Estado persistente
 const router = useRouter()
 
 onMounted(() => {
-  telaCarregada.value = false
   setTimeout(() => {
-    telaCarregada.value = true
-  }, 7000)
+    mostrarInicializacao.value = false;
+  }, 7000); // 🔥 Agora espera 9 segundos antes de exibir o login
 })
 
 function redirecionar() {
-  console.log("✅ Evento recebido! Redirecionando para /access-granted...")
+  console.log("✅ Login bem-sucedido! Redirecionando para /access-granted...")
   acessoLiberado.value = true
   localStorage.setItem('acessoLiberado', 'true') // 🔥 Estado persiste mesmo após reload
   router.push('/access-granted')
 }
 </script>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s ease-in-out;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
